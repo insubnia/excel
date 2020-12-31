@@ -12,9 +12,11 @@ except ModuleNotFoundError:
 
 class Position(object):
     def __init__(self):
+        self.sheet_name = None
         self.row_pos, self.col_pos = None, None
 
     def set_pos(self, row_pos, col_pos):
+        self.sheet_name = Excel.curr_sheet_name
         self.row_pos, self.col_pos = row_pos, col_pos
 
     def get_pos(self):
@@ -22,6 +24,8 @@ class Position(object):
 
 
 class Excel(object):
+    curr_sheet_name = None
+
     def __init__(self, filename):
         self.workbook = None
         self.sheet_names = None
@@ -39,6 +43,8 @@ class Excel(object):
         if sheetname not in self.sheet_names:
             print(f"<{sheetname}> doesn't exist in workbook")
             sys.exit()
+
+        Excel.curr_sheet_name = sheetname
 
         if 'win32com' in sys.modules:
             rows = self.workbook.Worksheets(sheetname).UsedRange.Value
