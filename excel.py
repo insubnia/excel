@@ -10,6 +10,17 @@ except ModuleNotFoundError:
     import xlrd
 
 
+class Position(object):
+    def __init__(self):
+        self.row_pos, self.col_pos = None, None
+
+    def set_pos(self, row_pos, col_pos):
+        self.row_pos, self.col_pos = row_pos, col_pos
+
+    def get_pos(self):
+        return f"<{self.row_pos:>3}, {self.col_pos:>2}>"
+
+
 class Excel(object):
     def __init__(self, filename):
         self.workbook = None
