@@ -29,15 +29,26 @@ class Excel(object):
     def __init__(self, filename):
         self.workbook = None
         self.sheet_names = None
+        self.was_open = False
 
         if 'win32com' in sys.modules:
             excel = Dispatch('Excel.Application')
             filename = os.path.abspath(filename)
+            for wb in excel.Workbooks:
+                if os.path.basename(filename) == wb.Name:
+                    self.was_open = True
             self.workbook = excel.Workbooks.Open(filename)
             self.sheet_names = [sheet.name for sheet in self.workbook.Sheets]
         else:
             self.workbook = xlrd.open_workbook(filename)
             self.sheet_names = self.workbook.sheet_names()
+
+    def __del__(self):
+        if 'win32com' in sys.modules:
+            if self.workbook and not self.was_open:
+                self.workbook.Close(True)
+        else:
+            pass
 
     def get_sheet_data(self, sheetname):
         if sheetname not in self.sheet_names:
