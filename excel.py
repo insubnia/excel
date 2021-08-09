@@ -53,7 +53,7 @@ class Excel(object):
     def get_sheet_data(self, sheetname):
         if sheetname not in self.sheet_names:
             print(f"<{sheetname}> doesn't exist in workbook")
-            sys.exit()
+            return None
 
         Excel.curr_sheet_name = sheetname
 
