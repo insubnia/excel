@@ -3,6 +3,7 @@ import os
 import sys
 import string
 import numpy as np
+from colorama import Fore
 
 try:
     from win32com.client import Dispatch
@@ -58,7 +59,14 @@ class Excel(object):
         Excel.curr_sheet_name = sheetname
 
         if 'win32com' in sys.modules:
-            rows = self.workbook.Worksheets(sheetname).UsedRange.Value
+            used = self.workbook.Worksheets(sheetname).UsedRange
+            try:
+                rows = used.Value
+            except:
+                print(f"{Fore.RED}\nUsed range of {sheetname} seems weird.\n"
+                      f" > Rows: {used.Rows.Count} / Columns: {used.Columns.Count}\n\n"
+                      f"Please trim and retry.\n{Fore.RESET}")
+                sys.exit()
             arr = np.ndarray([len(rows), len(rows[0])], dtype=object)
             for r, row in enumerate(rows):
                 for c, val in enumerate(row):
