@@ -63,8 +63,8 @@ class Excel(object):
             try:
                 rows = used.Value
             except:
-                print(f"{Fore.RED}\nUsed range of {sheetname} seems weird.\n"
-                      f" > Rows: {used.Rows.Count} / Columns: {used.Columns.Count}\n\n"
+                print(f"\n{Fore.RED}[Error] Used range of \"{sheetname}\" seems weird. "
+                      f"(Rows: {used.Rows.Count} / Columns: {used.Columns.Count})\n"
                       f"Please trim and retry.\n{Fore.RESET}")
                 sys.exit()
             arr = np.ndarray([len(rows), len(rows[0])], dtype=object)
